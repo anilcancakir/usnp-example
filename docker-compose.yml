@@ -1,0 +1,30 @@
+version: "3.1"
+
+services:
+    app:
+        build: .
+        container_name: app_container
+        working_dir: /var/www
+        volumes:
+            - /home/anilcan/www:/var/www
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ./nginx/sites-available:/etc/nginx/sites-available
+            - ./nginx/sites-enabled:/etc/nginx/sites-enabled
+            - ./nginx/snippets:/etc/nginx/snippets
+            - ./php/cli/php.ini:/etc/php/7.0/cli/php.ini
+            - ./php/fpm/php.ini:/etc/php/7.0/fpm/php.ini
+            - ./php/fpm/php-fpm.conf:/etc/php/7.0/fpm/php-fpm.conf
+            - ./php/custom-mod.ini:/etc/php/7.0/mods-available/custom-mod.ini
+        ports:
+            - "80:80"
+            - "22:22"
+
+    database:
+        image: postgres:9.3-alpine
+        container_name: database_container
+        environment:
+            - POSTGRES_USER=homestead
+            - POSTGRES_PASSWORD=secret
+            - POSTGRES_DB=homestead
+        ports:
+          - "5432:5432"
